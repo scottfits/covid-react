@@ -15,8 +15,8 @@ import {
   Table,
   Grid,
   Container,
-  Divider,
   Loader,
+  Input,
   Message
 } from "semantic-ui-react";
 import queryString from "query-string";
@@ -46,6 +46,7 @@ export default class Graph extends PureComponent {
       countiesToCases: null,
       countiesToGrowth: null,
       error: null,
+      searchText: "",
       selected: [
         "San Francisco, California",
         "New York City, New York",
@@ -123,10 +124,18 @@ export default class Graph extends PureComponent {
   }
   saveCountiesToQuerystring(updatedCounties) {
     const newQuerystring = JSON.stringify(updatedCounties.join("|"));
-    const newurl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?counties=${newQuerystring}`
+    const newurl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?counties=${newQuerystring}`;
     window.history.pushState({ path: newurl }, "", newurl);
   }
 
+  getCountiesToList() {
+    if (this.state.searchText) {
+      return this.state.counties.filter(county =>
+        county.toLowerCase().includes(this.state.searchText.toLowerCase())
+      );
+    }
+    return this.state.counties;
+  }
   render() {
     return (
       <Container>
@@ -177,9 +186,18 @@ export default class Graph extends PureComponent {
                 {this.getCountyLines()}
               </LineChart>
             </ResponsiveContainer>
-            <Grid.Row>
-              <Divider hidden style={{ height: 30 }} />
 
+            <Grid.Row>
+              <Input
+                placeholder="Search..."
+                value={this.state.searchText}
+                onChange={event =>
+                  this.setState({ searchText: event.target.value })
+                }
+              />
+            </Grid.Row>
+
+            <Grid.Row>
               <Table basic="very" celled collapsing unstackable>
                 {this.state.error && (
                   <Message color="blue">{this.state.error}</Message>
@@ -192,7 +210,7 @@ export default class Graph extends PureComponent {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {this.state.counties.map(county => (
+                  {this.getCountiesToList().map(county => (
                     <Table.Row key={county}>
                       <Table.Cell>
                         <div style={{ maxWidth: 150 }}>
