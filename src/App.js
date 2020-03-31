@@ -5,7 +5,7 @@ import Attribution from "./Attribution";
 import { Header, Divider } from "semantic-ui-react";
 import ReactGA from "react-ga";
 
-ReactGA.initialize("UA-000000-01");
+ReactGA.initialize("UA-7818756-9");
 
 function App() {
   return (
