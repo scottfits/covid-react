@@ -8,8 +8,6 @@ const Attribution = () => (
       Open source on{" "}
       <a href="https://github.com/scottfits/covid-react">Github</a>
     </p>
-    <br />
-    <br />
   </div>
 );
 
