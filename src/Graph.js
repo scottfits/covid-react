@@ -19,6 +19,7 @@ import {
   Loader,
   Message
 } from "semantic-ui-react";
+import queryString from "query-string";
 import { numberWithCommas } from "./utils";
 
 let url = "https://us-central1-scotts-tools.cloudfunctions.net/covid";
@@ -70,12 +71,17 @@ export default class Graph extends PureComponent {
         ((growth[property] - lastWeek[property]) * 100) / lastWeek[property];
       growth[property] = Math.round(increase);
     }
-    this.setState({
+    let newState = {
       data: recentDates,
       counties: cleanedCounties,
       countiesToCases: last,
       countiesToGrowth: growth
-    });
+    };
+    let qsCounties = this.getCountiesFromQuerystring();
+    if (qsCounties.length) {
+      newState.selected = qsCounties;
+    }
+    this.setState(newState);
   }
   getCountyLines() {
     return this.state.selected.map((name, index) => (
@@ -105,7 +111,22 @@ export default class Graph extends PureComponent {
       this.setState({ error: "10 is currently the selection limit" });
     }
     this.setState({ selected: updatedCounties });
+    this.saveCountiesToQuerystring(updatedCounties);
   }
+  getCountiesFromQuerystring() {
+    const parsed = queryString.parse(window.location.search);
+    const qsCountiesRaw = parsed["counties"];
+    if (qsCountiesRaw && qsCountiesRaw.length) {
+      return JSON.parse(qsCountiesRaw).split("|");
+    }
+    return [];
+  }
+  saveCountiesToQuerystring(updatedCounties) {
+    const newQuerystring = JSON.stringify(updatedCounties.join("|"));
+    const newurl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?counties=${newQuerystring}`
+    window.history.pushState({ path: newurl }, "", newurl);
+  }
+
   render() {
     return (
       <Container>
