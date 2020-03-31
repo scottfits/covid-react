@@ -1,10 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
 .App {
   text-align: center;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Raleway';
 }
+
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.light {
+  font-weight: 100 !important;
+  font-family: 'Raleway' !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -36,3 +49,27 @@
     transform: rotate(360deg);
   }
 }
+
+.checkbox {
+  background-color: #eeeeee;
+  margin: -5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.checkbox:checked {
+  background-color: #88e5ff;
+}
+
+.checkbox:hover {
+  background-color: #d2f5ff;
+}
+
+tspan {
+  overflow: visible;
+}
+
+body {
+  font-family: 'Raleway' !important;
+}
+
