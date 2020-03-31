@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Graph from "./Graph";
 import Attribution from "./Attribution";
@@ -8,6 +8,10 @@ import ReactGA from "react-ga";
 ReactGA.initialize("UA-7818756-9");
 
 function App() {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
+  });
+
   return (
     <div className="App">
       <br />
