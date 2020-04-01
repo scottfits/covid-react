@@ -58,15 +58,14 @@ export default class Graph extends PureComponent {
   async componentDidMount() {
     let data = await (await fetch(url)).json();
     let lastWeek = data[data.length - 8];
-    let last = data[data.length - 1];
-    let keys = Object.keys(last);
+    let thisWeek = data[data.length - 1];
+    let keys = Object.keys(thisWeek);
     let recentDates = data.slice(data.length - 14);
     let cleanedCounties = keys.filter(
       name => name !== "date" && name !== "Unknown"
     );
-    cleanedCounties.sort((a, b) => last[b] - last[a]);
-    console.log(last);
-    let growth = Object.assign({}, last);
+    cleanedCounties.sort((a, b) => thisWeek[b] - thisWeek[a]);
+    let growth = Object.assign({}, thisWeek);
     for (const property in growth) {
       let increase =
         ((growth[property] - lastWeek[property]) * 100) / lastWeek[property];
@@ -75,7 +74,7 @@ export default class Graph extends PureComponent {
     let newState = {
       data: recentDates,
       counties: cleanedCounties,
-      countiesToCases: last,
+      countiesToCases: thisWeek,
       countiesToGrowth: growth
     };
     let qsCounties = this.getCountiesFromQuerystring();
