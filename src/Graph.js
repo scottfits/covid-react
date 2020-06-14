@@ -11,13 +11,12 @@ import {
   ResponsiveContainer
 } from "recharts";
 import {
-  Checkbox,
-  Table,
   Grid,
   Container,
   Loader,
   Input,
-  Message
+  Message,
+  Button
 } from "semantic-ui-react";
 import queryString from "query-string";
 import { numberWithCommas } from "./utils";
@@ -198,44 +197,29 @@ export default class Graph extends PureComponent {
             </Grid.Row>
 
             <Grid.Row>
-              <Table basic="very" celled collapsing unstackable>
                 {this.state.error && (
                   <Message color="blue">{this.state.error}</Message>
                 )}
-                <Table.Header>
-                  <Table.Row>
-                    <Table.Cell>County</Table.Cell>
-                    <Table.Cell>Cases</Table.Cell>
-                    <Table.Cell>Weekly growth</Table.Cell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
+
+                <Grid padded centered>
                   {this.getCountiesToList().map(county => (
-                    <Table.Row key={county}>
-                      <Table.Cell>
-                        <div style={{ maxWidth: 150 }}>
-                          <Checkbox
-                            className="checkbox"
-                            label={county}
-                            onChange={() => this.toggleCheckbox(county)}
-                            checked={this.isChecked(county)}
-                          />
-                        </div>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <p>
-                          {numberWithCommas(this.state.countiesToCases[county])}
-                        </p>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <p style={{ color: "green" }}>
-                          +{this.state.countiesToGrowth[county]}%
-                        </p>
-                      </Table.Cell>
-                    </Table.Row>
+                    <Grid.Column mobile={8} tablet={5} computer={3} key={county} className={this.isChecked(county) ? 'county-col': ''} >
+
+                        <Button compact toggle active={this.isChecked(county)} onClick={() => this.toggleCheckbox(county)}>
+                          {county}
+                          <br/>
+                          <br/>
+                          <span className='light'>
+                          {`Cases: ${numberWithCommas(this.state.countiesToCases[county])} `}
+                          <br/>
+                          {`Weekly growth: +${this.state.countiesToGrowth[county]}%`}
+</span>
+                        </Button>
+
+                    </Grid.Column>
                   ))}
-                </Table.Body>
-              </Table>
+                </Grid>
+
             </Grid.Row>
           </Grid>
         )}
