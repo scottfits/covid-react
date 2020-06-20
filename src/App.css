@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Raleway';
+  font-family: 'Raleway', sans-serif;
 }
 
 
@@ -50,19 +50,8 @@
   }
 }
 
-.checkbox {
-  background-color: #eeeeee;
-  margin: -5px;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.checkbox:checked {
-  background-color: #88e5ff;
-}
-
-.checkbox:hover {
-  background-color: #d2f5ff;
+.county-col {
+  order: -1;
 }
 
 tspan {
